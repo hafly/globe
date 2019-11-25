@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+    <script src="three.js"></script>
+    <script src="../build/globe.js"></script>
+</head>
+<body>
+<script>
+    class Editor {
+        constructor() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            this.scene = new THREE.Scene();
+
+            this.camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 20576957);
+            this.camera.position.set(-4965450.844358992, 12000814.555752575, -15644212.071953813);
+            this.camera.lookAt(this.scene.position);
+
+            this.renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            this.renderer.setPixelRatio(window.devicePixelRatio);
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+            this.renderer.autoClear = false;
+            document.body.appendChild(this.renderer.domElement);
+
+            let light1 = new THREE.AmbientLight(0xffffff, 0.3);
+            this.scene.add(light1);
+
+            let light2 = new THREE.DirectionalLight(0xffffff, 0.8);
+            light2.position.set(0, 10, 10);
+            light2.lookAt(new THREE.Vector3());
+            this.scene.add(light2);
+
+            this.onWindowResize = this.onWindowResize.bind(this);
+            window.addEventListener('resize', this.onWindowResize, false);
+        }
+
+        update(_self) {
+            let self = _self;
+            requestAnimationFrame(function () {
+                self.update(self);
+            });
+
+            self.renderer.render(self.scene, self.camera);
+        }
+
+        onWindowResize() {
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.updateProjectionMatrix();
+
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+    }
+
+    let app = window.app = {};
+
+    let editor = new Editor();
+    editor.update(editor);
+
+    app.editor = editor;
+    app.editor.gis = new GLOBE.Scene(app);
+    app.editor.gis.start();
+</script>
+</body>
+</html>

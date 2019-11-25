@@ -1,0 +1,11 @@
+{
+  "name": "globe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "author": "",
+  "license": "ISC"
+}
