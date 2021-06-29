@@ -157,6 +157,9 @@ class TiledLayerRenderer extends Renderer {
 
         // x, y, z
         this.tiles.forEach(tile => {
+            // BUG FIX: Solve the problem of blurry rendering caused by tile level confusion
+            if(tile.z <= this.creator.centerZoom) return
+            
             tile.images.forEach(n => {
                 gl.uniform1i(this.uniforms.x, n._x);
                 gl.uniform1i(this.uniforms.y, n._y);
